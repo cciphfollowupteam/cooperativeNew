@@ -13,7 +13,7 @@ from passlib.context import CryptContext
 from pydantic import BaseModel, EmailStr
 from typing import List
 
-from .models import Base, User, Contribution, Loan, LoanRepayment, AuditLog, UserRole, LoanStatus, LoanType
+from models import Base, User, Contribution, Loan, LoanRepayment, AuditLog, UserRole, LoanStatus, LoanType
 
 # Configuration
 SECRET_KEY = os.getenv("SECRET_KEY", "super-secret-coop-key-12345")
