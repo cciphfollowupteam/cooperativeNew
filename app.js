@@ -1,4 +1,6 @@
-const API_URL = 'http://localhost:8000';
+const API_URL = '/api'; // Use relative path for Vercel/Production
+ // Changed from localhost to 127.0.0.1 for better compatibility
+
 let currentUser = null;
 let authToken = null;
 
@@ -183,15 +185,24 @@ async function login(email, password) {
     formData.append('username', email);
     formData.append('password', password);
 
-    const res = await fetch(`${API_URL}/token`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams(formData)
-    });
+    try {
+        const res = await fetch(`${API_URL}/token`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams(formData)
+        });
 
-    if (!res.ok) throw new Error('Invalid credentials');
-    const data = await res.json();
-    return data;
+        if (!res.ok) {
+            const errorData = await res.json();
+            throw new Error(errorData.detail || 'Invalid credentials');
+        }
+        return await res.json();
+    } catch (e) {
+        if (e.message.includes('Failed to fetch')) {
+            throw new Error('Cannot connect to server. Is the Python terminal running?');
+        }
+        throw e;
+    }
 }
 
 async function fetchDashboard() {

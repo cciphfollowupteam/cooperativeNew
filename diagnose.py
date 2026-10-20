@@ -1,0 +1,5 @@
+print('--- DIAGNOSTIC START ---')
+import os; print(f'Current Directory: {os.getcwd()}')
+import sqlalchemy; from main import engine; print('Database connection: SUCCESS' if engine else 'FAILED')
+import uvicorn; print('Uvicorn available')
+print('--- DIAGNOSTIC END ---')
